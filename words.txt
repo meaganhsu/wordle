@@ -1277,7 +1277,6 @@ mushy
 music
 musky
 musty
-myrrh
 nadir
 naive
 nanny
@@ -1635,7 +1634,6 @@ salon
 salsa
 salty
 salve
-salvo
 sandy
 saner
 sappy
@@ -1647,7 +1645,6 @@ saucy
 sauna
 saute
 savor
-savoy
 savvy
 scald
 scale
