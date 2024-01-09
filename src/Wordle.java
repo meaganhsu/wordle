@@ -28,7 +28,6 @@ public class Wordle {
                 System.out.println("- " + YELLOW + "yellow" + RESET + " indicates that the letter is in the word but in the wrong position.\n");
                 boolean w = game();
                 addStats(w);
-                //break;
             } else if (input.equals("stats")) {
                 stats();
             }
@@ -50,7 +49,7 @@ public class Wordle {
 
         while (attempts > 0) {
             System.out.println("Guess #" + (7-attempts) + ": ");
-            String guess = scanner.nextLine().toLowerCase();      // getting user's guess
+            String guess = scanner.nextLine().toLowerCase();       // getting user's guess
 
             if (guess.length() != 5) {
                 System.out.println("please enter a five-letter word.\n");
@@ -66,11 +65,9 @@ public class Wordle {
             }
 
             if (guess.equals(ans)) {
-                for (char c : guess.toCharArray()) {
-                    System.out.print(GREEN + c + RESET);
-                }
+                for (char c : guess.toCharArray()) System.out.print(GREEN + c + RESET);
                 win = true;
-                break;
+                break;       // automatic win, game ends
             }
 
             char[] tempAns = ans.toCharArray();
@@ -79,16 +76,16 @@ public class Wordle {
 
             for (int i = 0; i < tempGuess.length; i++) {
                 if (tempGuess[i] == tempAns[i]) {
-                    result[i] = 2;
+                    result[i] = 2;      // green = 2 (indicating that the element holding '2' should be coloured green)
                     tempAns[i] = ' ';
-                    tempGuess[i] = ' ';
+                    tempGuess[i] = ' ';       // emptying the letter so that it isn't read twice
                 }
             }
             for (int i = 0; i < tempGuess.length; i++) {
                 if (tempGuess[i] != ' ') {
                     for (int j = 0; j < tempAns.length; j++) {
                         if (tempGuess[i] == tempAns[j]) {
-                            result[i] = 1;
+                            result[i] = 1;          // yellow = 1
                             tempAns[j] = ' ';
                             tempGuess[i] = ' ';
                             break;
@@ -113,7 +110,7 @@ public class Wordle {
             return true;
         }
         else  {
-            System.out.println("you ran out of guesses. the answer was " + ans + ".");
+            System.out.println("\n\nyou ran out of guesses. the answer was " + GREEN + ans + RESET + ".");
             System.out.println("better luck next time!\n");
             return false;
         }
@@ -125,13 +122,14 @@ public class Wordle {
         Scanner statsScan = new Scanner(statsFile);
         scanner = new Scanner(System.in);
         boolean userFound = false;
+        boolean invalid = false;
         stats();
 
         while (true) {
             System.out.println("if you already have a previous save, enter the name the save.\nif not, enter a new name and create a new save.");
             String player = scanner.nextLine().toLowerCase().replaceAll("\\s", "");
             System.out.println();
-            int n = 0;
+            int n = 0;     // line no.
 
             while (statsScan.hasNextLine()) {
                 String[] line = statsScan.nextLine().split(" ");    // creating array for each line
@@ -140,7 +138,8 @@ public class Wordle {
                     name += line[i];
                     if (i != line.length-3) name += " ";
                 }
-                String temp = name.replaceAll("\\s", "");
+                String temp = name.replaceAll("\\s", "").toLowerCase();     // removing white spaces
+
                 if (player.equals(temp)) {
                     System.out.println("this you?");
                     int gamesPlayed = Integer.parseInt(line[line.length-2]);
@@ -149,29 +148,37 @@ public class Wordle {
                     System.out.println("player: " + name);
                     System.out.println("total played: " + gamesPlayed);
                     System.out.println("games won: " + gamesWon + " | " + winPercentage + "%\n");
-                    input = scanner.nextLine().toLowerCase();
+                    input = scanner.nextLine().toLowerCase();      // y or n input
                     System.out.println();
 
-                    if (input.equals("n") || input.equals("no")) break;
+                    if (input.equals("n") || input.equals("no")) {
+                        invalid = true;      // —> re-prompt
+                        break;
+                    }
                     else if (input.equals("y") || input.equals("yes")) {
                         gamesPlayed++;
                         if (win) gamesWon++;
-                        String update = name + " " + gamesPlayed + " " + gamesWon;
+                        String update = name + " " + gamesPlayed + " " + gamesWon;     // amended line
                         updateStats("stats.txt", n+1, update);
                         userFound = true;
                         break;
-                    } else System.out.println("invalid input. ");
+                    } else {
+                        System.out.println("invalid input. ");
+                        invalid = true;
+                    }
                 }
-                n++;
+                n++;      // line no.
             }
-            if (!userFound) {
+            if (invalid) invalid = false;        // —> re-prompt
+            else if (userFound) break;
+            else {
+                System.out.println();
+                input = "";
                 if (win) fileWriter.write("\n" + player + " 1 1");
                 else fileWriter.write("\n" + player + " 1 0");
                 fileWriter.close();
-                userFound = true;
                 break;
             }
-            else break;
         }
         statsScan.close();
     }
@@ -197,7 +204,7 @@ public class Wordle {
         File ansFile = new File("words.txt");
         Scanner ansScanner = new Scanner(ansFile);
         Random random = new Random();
-        int x = random.nextInt(2307);     // generating random number (answer)
+        int x = random.nextInt(2307);     // generating random number —> (answer)
         String ans = null;
 
         for (int i = 0; i <= x; i++) {
@@ -234,7 +241,7 @@ public class Wordle {
             else data.append(line);
 
             if (!reader.ready()) break;
-            data.append("\n");      // append "\n" only if its not the final line
+            data.append("\n");      // append \n only if not the final line
             x++;
         }
 
