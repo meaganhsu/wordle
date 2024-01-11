@@ -154,7 +154,7 @@ public class Wordle {
                         gamesPlayed++;
                         if (win) gamesWon++;
                         String update = name + " " + gamesPlayed + " " + gamesWon;     // amended line
-                        updateStats("stats.txt", lineNum+1, update);
+                        updateStats(lineNum+1, update);      // line to update
                         userFound = true;
                         System.out.println("\nupdated.");
                         break;
@@ -190,7 +190,6 @@ public class Wordle {
     public static void stats() throws FileNotFoundException, IOException {
         File statsFile = new File("stats.txt");
         Scanner statsScan = new Scanner(statsFile);
-        int y = 0;       // iteration num
         while (statsScan.hasNextLine()) {
             String data = statsScan.nextLine();
             String[] stats = data.split(" ");
@@ -202,7 +201,6 @@ public class Wordle {
             System.out.println(BOLD + "player: " + RESET + name);
             System.out.println(BOLD + "total played: " + RESET + gamesPlayed);
             System.out.println(BOLD + "games won: " + RESET + gamesWon + " | " + winPercentage + "%\n");
-            y++;
         }
         System.out.println();
         statsScan.close();
@@ -235,8 +233,8 @@ public class Wordle {
         dictScanner.close();
         return false;
     }
-    public static void updateStats(String filePath, int lineNum, String replace) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+    public static void updateStats(int lineNum, String replace) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("stats.txt"));
         StringBuilder data = new StringBuilder();
         String line;
         int x = 1;     // loop num
@@ -252,7 +250,7 @@ public class Wordle {
             x++;
         }
 
-        PrintWriter writer = new PrintWriter(new FileWriter(filePath)); // writing modified content back to file
+        PrintWriter writer = new PrintWriter(new FileWriter("stats.txt")); // writing modified content back to file
         writer.write(data.toString());
         reader.close();
         writer.close();
