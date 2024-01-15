@@ -32,6 +32,7 @@ public class Wordle {
                 stats();
             }
             else if (input.equals("quit") || input.equals("3")) {
+                System.out.println("thank you for playing !");
                 System.exit(0);
                 break;
             }
@@ -103,13 +104,13 @@ public class Wordle {
         }
 
         if (win) {
-            System.out.println("\n\ngood job! you guessed the word in " + (7-attempts) + " attempt(s).");
-            System.out.println("thanks for playing.\n");
+            System.out.println("\n\ngood job !  you guessed the word in " + (7-attempts) + " attempt(s).");
+            System.out.println("thanks for playing !\n");
             return true;
         }
         else  {
             System.out.println("\n\nyou ran out of guesses. the answer was " + GREEN + ans + RESET + ".");
-            System.out.println("better luck next time!\n");
+            System.out.println("better luck next time !\n");
             return false;
         }
 
@@ -156,7 +157,7 @@ public class Wordle {
                         String update = name + " " + gamesPlayed + " " + gamesWon;     // amended line
                         updateStats(lineNum+1, update);      // line to update
                         userFound = true;
-                        System.out.println("\nupdated.");
+                        System.out.println("updated.\n");
                         break;
                     } else if (input.equals("n") || input.equals("no")) {
                         invalid = true;      // —> re-prompt
@@ -180,7 +181,7 @@ public class Wordle {
                     if (win) fileWriter.write("\n" + player + " 1 1");
                     else fileWriter.write("\n" + player + " 1 0");
                     fileWriter.close();
-                    System.out.println("saved.");
+                    System.out.println("saved.\n");
                     break;
                 }
                 else if (input.equals("n") || input.equals("no")) {}
