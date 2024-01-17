@@ -3,7 +3,7 @@ import java.util.Scanner;
 import java.util.Random;
 import java.io.*;
 public class Wordle {
-    private static final String GREEN = "\033[0;32m";
+    private static  String GREEN = "\033[0;32m";
     private static final String YELLOW = "\033[0;33m";
     private static final String RESET = "\033[0m";
     private static final String BOLD = "\u001B[1m";
@@ -23,8 +23,14 @@ public class Wordle {
             System.out.println();
 
             if (input.equals("play") || input.equals("1")) {
-                System.out.println("- you have six attempts to guess a five letter word.");
-                System.out.println("- " + GREEN + "green" + RESET + " indicates that the letter is in the word and in the correct position.");
+                System.out.println("enter [c] for colourblind mode. \npress any key for otherwise.");
+                input = scanner.nextLine().toLowerCase();
+                System.out.println("\n- you have six attempts to guess a five letter word.");
+                if (input.equals("c")) {
+                    GREEN = "\033[0;34m";
+                    System.out.println("- " + GREEN + "blue" + RESET + " indicates that the letter is in the word and in the correct position.");
+                }
+                else System.out.println("- " + GREEN + "green" + RESET + " indicates that the letter is in the word and in the correct position.");
                 System.out.println("- " + YELLOW + "yellow" + RESET + " indicates that the letter is in the word but in the wrong position.\n");
                 boolean w = game();
                 addStats(w);
